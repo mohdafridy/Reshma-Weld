@@ -1,10 +1,18 @@
-import { Phone, Mail, MapPin, Clock, MapPinned } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, MapPinned, MessageCircle } from "lucide-react";
 import Seo from "../components/Seo";
 import Container from "../components/ui/Container";
 import PageHero from "../components/ui/PageHero";
 import Reveal from "../components/ui/Reveal";
 import ContactForm from "../components/contact/ContactForm";
 import { siteConfig } from "../config/site";
+
+function telHref(number: string) {
+  return `tel:${number.replace(/\s/g, "")}`;
+}
+
+function whatsappHref(number: string) {
+  return `https://wa.me/${number.replace(/[\s+]/g, "")}`;
+}
 
 export default function Contact() {
   const { contact } = siteConfig;
@@ -42,7 +50,43 @@ export default function Contact() {
                     </span>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wide text-steel-500">Phone</p>
-                      <p className="text-sm font-medium text-ink-900">{contact.phonePrimary}</p>
+                      <p className="text-sm font-medium text-ink-900">
+                        <a href={telHref(contact.phonePrimary)} className="hover:text-accent-600">
+                          {contact.phonePrimary}
+                        </a>
+                        {" / "}
+                        <a href={telHref(contact.phoneSecondary)} className="hover:text-accent-600">
+                          {contact.phoneSecondary}
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3.5">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center bg-ink-950 text-accent-400">
+                      <MessageCircle size={18} />
+                    </span>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-steel-500">WhatsApp</p>
+                      <p className="text-sm font-medium text-ink-900">
+                        <a
+                          href={whatsappHref(contact.whatsapp)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-accent-600"
+                        >
+                          {contact.whatsapp}
+                        </a>
+                        {" / "}
+                        <a
+                          href={whatsappHref(contact.whatsappSecondary)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-accent-600"
+                        >
+                          {contact.whatsappSecondary}
+                        </a>
+                      </p>
                     </div>
                   </div>
 
@@ -52,7 +96,11 @@ export default function Contact() {
                     </span>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wide text-steel-500">Email</p>
-                      <p className="text-sm font-medium text-ink-900">{contact.email}</p>
+                      <p className="text-sm font-medium text-ink-900">
+                        <a href={`mailto:${contact.email}`} className="hover:text-accent-600">
+                          {contact.email}
+                        </a>
+                      </p>
                     </div>
                   </div>
 
@@ -63,8 +111,8 @@ export default function Contact() {
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wide text-steel-500">Address</p>
                       <p className="text-sm font-medium text-ink-900">
-                        {contact.address.line1}, {contact.address.city}, {contact.address.state} —{" "}
-                        {contact.address.pincode}, {contact.address.country}
+                        {contact.address.line1}, {contact.address.line2}, {contact.address.city},{" "}
+                        {contact.address.state} — {contact.address.pincode}, {contact.address.country}
                       </p>
                     </div>
                   </div>
@@ -94,6 +142,8 @@ export default function Contact() {
                       </p>
                     </div>
                   </div>
+
+                  <p className="text-xs text-steel-500">GSTIN: {contact.gstNumber}</p>
                 </div>
               </div>
             </Reveal>

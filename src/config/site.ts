@@ -1,9 +1,5 @@
 /**
  * Central site configuration.
- *
- * IMPORTANT: Contact details below are intentionally left as placeholders.
- * Do not invent phone numbers, emails, addresses, or GST numbers — replace
- * these values with verified company details before launch.
  */
 
 export const siteConfig = {
@@ -18,29 +14,29 @@ export const siteConfig = {
 
   url: "https://www.reshmaweld.com",
 
-  // Placeholder contact details — replace with verified information.
   contact: {
-    phonePrimary: "+91 XXXXX XXXXX", // TODO: add verified phone number
-    phoneSecondary: "", // TODO: optional second line
-    whatsapp: "", // TODO: add WhatsApp number if available
-    email: "info@reshmaweld.example", // TODO: replace with verified email
+    phonePrimary: "+91 99455 14876",
+    phoneSecondary: "+91 93535 94365",
+    whatsapp: "+91 99455 14876",
+    whatsappSecondary: "+91 93535 94365",
+    email: "reshmaweld@yahoo.co.in",
     salesEmail: "", // TODO: optional dedicated sales email
     address: {
-      line1: "Address line 1", // TODO: add verified address
-      line2: "Address line 2",
-      city: "City",
-      state: "State",
-      pincode: "PIN Code",
+      line1: "5MMR+VH4, BK Halli Road, Airport Road",
+      line2: "Mylanahalli, Mailanahalli",
+      city: "Bengaluru",
+      state: "Karnataka",
+      pincode: "562149",
       country: "India",
     },
-    gstNumber: "", // TODO: add GST number if applicable
-    businessHours: "Mon – Sat, 9:30 AM – 6:30 PM", // TODO: confirm hours
+    gstNumber: "29AWVPR1765J1ZJ",
+    businessHours: "Mon – Sat: 9:00 AM – 8:00 PM · Sunday: Half Day",
   },
 
   social: {
     linkedin: "", // TODO: add LinkedIn URL
     facebook: "", // TODO: add Facebook URL
-    instagram: "", // TODO: add Instagram URL
+    instagram: "https://www.instagram.com/rwtc_weld",
     youtube: "", // TODO: add YouTube URL
   },
 

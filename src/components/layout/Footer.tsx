@@ -96,11 +96,30 @@ export default function Footer() {
             <ul className="mt-5 flex flex-col gap-3 text-sm text-steel-400">
               <li className="flex items-start gap-2.5">
                 <Phone size={16} className="mt-0.5 shrink-0 text-accent-400" />
-                <span>{siteConfig.contact.phonePrimary}</span>
+                <span>
+                  <a
+                    href={`tel:${siteConfig.contact.phonePrimary.replace(/\s/g, "")}`}
+                    className="transition-colors hover:text-accent-400"
+                  >
+                    {siteConfig.contact.phonePrimary}
+                  </a>
+                  {" / "}
+                  <a
+                    href={`tel:${siteConfig.contact.phoneSecondary.replace(/\s/g, "")}`}
+                    className="transition-colors hover:text-accent-400"
+                  >
+                    {siteConfig.contact.phoneSecondary}
+                  </a>
+                </span>
               </li>
               <li className="flex items-start gap-2.5">
                 <Mail size={16} className="mt-0.5 shrink-0 text-accent-400" />
-                <span>{siteConfig.contact.email}</span>
+                <a
+                  href={`mailto:${siteConfig.contact.email}`}
+                  className="transition-colors hover:text-accent-400"
+                >
+                  {siteConfig.contact.email}
+                </a>
               </li>
               <li className="flex items-start gap-2.5">
                 <MapPin size={16} className="mt-0.5 shrink-0 text-accent-400" />
@@ -115,7 +134,8 @@ export default function Footer() {
 
         <div className="mt-14 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-steel-500 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            &copy; {year} {siteConfig.companyName}. All rights reserved.
+            &copy; {year} {siteConfig.companyName}. All rights reserved. &middot; GSTIN:{" "}
+            {siteConfig.contact.gstNumber}
           </p>
           <p>Welding &amp; Industrial Equipment — Sales, Rental &amp; Service across India.</p>
         </div>
