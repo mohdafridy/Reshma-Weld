@@ -31,5 +31,23 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!--
+      Static shadow form for Netlify's form-detection bot, which only scans
+      built HTML and never runs the React app. Field names must match the
+      payload posted from ContactForm.tsx. Hidden from users; the visible
+      form is rendered by React.
+    -->
+    <form name="enquiry" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="text" name="company" />
+      <input type="tel" name="phone" />
+      <input type="email" name="email" />
+      <input type="text" name="location" />
+      <input type="text" name="requirementType" />
+      <input type="text" name="product" />
+      <textarea name="message"></textarea>
+      <input type="text" name="bot-field" />
+    </form>
   </body>
 </html>

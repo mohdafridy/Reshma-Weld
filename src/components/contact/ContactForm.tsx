@@ -1,8 +1,9 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useSearchParams } from "react-router-dom";
-import { CheckCircle2, Send } from "lucide-react";
+import { CheckCircle2, Send, AlertTriangle } from "lucide-react";
 import Button from "../ui/Button";
 import type { RequirementType } from "../../types";
+import { siteConfig } from "../../config/site";
 
 const requirementTypes: RequirementType[] = ["Sales", "Rental", "Service", "General Enquiry"];
 
@@ -39,10 +40,18 @@ const inputClasses =
 
 const labelClasses = "mb-2 block text-xs font-semibold uppercase tracking-wide text-ink-700";
 
+function encodeFormData(data: Record<string, string>) {
+  return Object.entries(data)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join("&");
+}
+
 export default function ContactForm() {
   const [searchParams] = useSearchParams();
   const [form, setForm] = useState<FormState>(initialState);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, boolean>>>({});
 
   useEffect(() => {
@@ -56,7 +65,7 @@ export default function ContactForm() {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const nextErrors: Partial<Record<keyof FormState, boolean>> = {};
     if (!form.name.trim()) nextErrors.name = true;
@@ -71,10 +80,23 @@ export default function ContactForm() {
       return;
     }
 
-    // NOTE: No backend/email service is configured yet. Wire this handler
-    // to a real form endpoint or email API before relying on it in production.
     setErrors({});
-    setSubmitted(true);
+    setSubmitError(false);
+    setSubmitting(true);
+
+    try {
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encodeFormData({ "form-name": "enquiry", ...form }),
+      });
+      if (!response.ok) throw new Error(`Submission failed: ${response.status}`);
+      setSubmitted(true);
+    } catch {
+      setSubmitError(true);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   if (submitted) {
@@ -101,7 +123,21 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="border border-ink-900/10 bg-white p-6 sm:p-8">
+    <form
+      onSubmit={handleSubmit}
+      noValidate
+      name="enquiry"
+      data-netlify="true"
+      className="border border-ink-900/10 bg-white p-6 sm:p-8"
+    >
+      <input type="hidden" name="form-name" value="enquiry" />
+      <p className="hidden">
+        <label>
+          Leave this field blank
+          <input name="bot-field" tabIndex={-1} autoComplete="off" />
+        </label>
+      </p>
+
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className={labelClasses}>
@@ -109,6 +145,7 @@ export default function ContactForm() {
           </label>
           <input
             id="name"
+            name="name"
             type="text"
             value={form.name}
             onChange={(e) => update("name", e.target.value)}
@@ -125,6 +162,7 @@ export default function ContactForm() {
           </label>
           <input
             id="company"
+            name="company"
             type="text"
             value={form.company}
             onChange={(e) => update("company", e.target.value)}
@@ -139,6 +177,7 @@ export default function ContactForm() {
           </label>
           <input
             id="phone"
+            name="phone"
             type="tel"
             value={form.phone}
             onChange={(e) => update("phone", e.target.value)}
@@ -154,6 +193,7 @@ export default function ContactForm() {
           </label>
           <input
             id="email"
+            name="email"
             type="email"
             value={form.email}
             onChange={(e) => update("email", e.target.value)}
@@ -169,6 +209,7 @@ export default function ContactForm() {
           </label>
           <input
             id="location"
+            name="location"
             type="text"
             value={form.location}
             onChange={(e) => update("location", e.target.value)}
@@ -183,6 +224,7 @@ export default function ContactForm() {
           </label>
           <select
             id="requirementType"
+            name="requirementType"
             value={form.requirementType}
             onChange={(e) => update("requirementType", e.target.value as RequirementType)}
             className={`${inputClasses} appearance-none`}
@@ -201,6 +243,7 @@ export default function ContactForm() {
           </label>
           <input
             id="product"
+            name="product"
             type="text"
             value={form.product}
             onChange={(e) => update("product", e.target.value)}
@@ -215,6 +258,7 @@ export default function ContactForm() {
           </label>
           <textarea
             id="message"
+            name="message"
             value={form.message}
             onChange={(e) => update("message", e.target.value)}
             rows={5}
@@ -232,8 +276,32 @@ export default function ContactForm() {
         </p>
       )}
 
-      <Button type="submit" variant="primary" size="lg" icon={Send} className="mt-6 w-full sm:w-auto">
-        Send Enquiry
+      {submitError && (
+        <div className="mt-4 flex items-start gap-2.5 border border-accent-500/30 bg-accent-100 p-4 text-sm text-accent-600">
+          <AlertTriangle size={16} className="mt-0.5 shrink-0" />
+          <span>
+            Something went wrong sending your enquiry. Please try again, or reach us directly at{" "}
+            <a href={`tel:${siteConfig.contact.phonePrimary.replace(/\s/g, "")}`} className="underline">
+              {siteConfig.contact.phonePrimary}
+            </a>{" "}
+            or{" "}
+            <a href={`mailto:${siteConfig.contact.email}`} className="underline">
+              {siteConfig.contact.email}
+            </a>
+            .
+          </span>
+        </div>
+      )}
+
+      <Button
+        type="submit"
+        variant="primary"
+        size="lg"
+        icon={Send}
+        disabled={submitting}
+        className="mt-6 w-full sm:w-auto"
+      >
+        {submitting ? "Sending…" : "Send Enquiry"}
       </Button>
     </form>
   );
