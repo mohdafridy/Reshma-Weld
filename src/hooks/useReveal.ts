@@ -19,7 +19,7 @@ export function useReveal<T extends HTMLElement>(threshold = 0.15) {
       return;
     }
 
-    const fallback = window.setTimeout(() => setIsVisible(true), 1200);
+    const fallback = window.setTimeout(() => setIsVisible(true), 500);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
