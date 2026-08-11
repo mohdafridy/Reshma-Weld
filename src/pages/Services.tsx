@@ -11,7 +11,7 @@ export default function Services() {
     <>
       <Seo
         title="Services"
-        description="Reshma Weld Associates provides equipment sales, rental, installation, operational training, technical support, troubleshooting and after-sales service."
+        description="Reshma Weld Trading Corporation provides equipment sales, rental, installation, operational training, technical support, troubleshooting and after-sales service."
       />
 
       <PageHero

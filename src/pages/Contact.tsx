@@ -13,7 +13,7 @@ export default function Contact() {
     <>
       <Seo
         title="Contact Us"
-        description="Get in touch with Reshma Weld Associates for welding and industrial equipment sales, rental, service and technical support enquiries across India."
+        description="Get in touch with Reshma Weld Trading Corporation for welding and industrial equipment sales, rental, service and technical support enquiries across India."
       />
 
       <PageHero

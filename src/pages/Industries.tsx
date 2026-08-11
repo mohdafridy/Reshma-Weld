@@ -10,7 +10,7 @@ export default function Industries() {
     <>
       <Seo
         title="Industries We Serve"
-        description="Reshma Weld Associates supplies welding and industrial equipment across construction, infrastructure, engineering, fabrication, manufacturing, railways, aviation, shipbuilding and more."
+        description="Reshma Weld Trading Corporation supplies welding and industrial equipment across construction, infrastructure, engineering, fabrication, manufacturing, railways, aviation, shipbuilding and more."
       />
 
       <PageHero

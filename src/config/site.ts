@@ -7,14 +7,14 @@
  */
 
 export const siteConfig = {
-  companyName: "Reshma Weld Associates",
-  legalName: "Reshma Weld Associates",
+  companyName: "Reshma Weld Trading Corporation",
+  legalName: "Reshma Weld Trading Corporation",
   tagline: "Welding & Industrial Equipment — Sales, Rental & Service",
   established: 2006,
   market: "India",
 
   description:
-    "Reshma Weld Associates supplies welding machines, cutting equipment, welding consumables, accessories and industrial equipment with sales, rental, installation, training and technical support across India.",
+    "Reshma Weld Trading Corporation supplies welding machines, cutting equipment, welding consumables, accessories and industrial equipment with sales, rental, installation, training and technical support across India.",
 
   url: "https://www.reshmaweld.com",
 

@@ -12,7 +12,7 @@ export default function Quality() {
     <>
       <Seo
         title="Quality"
-        description="Reshma Weld Associates sources equipment from trusted vendors, evaluated by quality controllers, following a structured procurement, inspection, storage and delivery process."
+        description="Reshma Weld Trading Corporation sources equipment from trusted vendors, evaluated by quality controllers, following a structured procurement, inspection, storage and delivery process."
       />
 
       <PageHero

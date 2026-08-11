@@ -44,7 +44,7 @@ export default function Products() {
     <>
       <Seo
         title="Products"
-        description="Browse welding machines, cutting equipment, welding consumables, accessories, gas welding equipment, safety equipment and industrial workshop equipment supplied by Reshma Weld Associates."
+        description="Browse welding machines, cutting equipment, welding consumables, accessories, gas welding equipment, safety equipment and industrial workshop equipment supplied by Reshma Weld Trading Corporation."
       />
 
       <section className="border-b border-ink-900/10 bg-ink-950 py-16 sm:py-20">

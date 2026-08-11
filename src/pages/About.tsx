@@ -33,13 +33,13 @@ export default function About() {
     <>
       <Seo
         title="About Us"
-        description="Reshma Weld Associates, established in 2006, supplies welding machines, welding inverters, welding equipment, accessories and industrial products to customers across industries."
+        description="Reshma Weld Trading Corporation, established in 2006, supplies welding machines, welding inverters, welding equipment, accessories and industrial products to customers across industries."
       />
 
       <PageHero
         kicker="About Us"
         title="Two Decades of Welding & Industrial Equipment Expertise"
-        description={`Reshma Weld Associates, established in ${siteConfig.established}, has been supplying welding machines, welding inverters, welding equipment, accessories and industrial products to customers across industries.`}
+        description={`Reshma Weld Trading Corporation, established in ${siteConfig.established}, has been supplying welding machines, welding inverters, welding equipment, accessories and industrial products to customers across industries.`}
       />
 
       <section className="bg-white py-20 sm:py-24">

@@ -42,7 +42,7 @@ export default function SalesRental() {
     <>
       <Seo
         title="Sales & Rental"
-        description="Reshma Weld Associates supplies welding and industrial equipment for sale and offers selected equipment on rental for short-term projects, construction sites and maintenance requirements."
+        description="Reshma Weld Trading Corporation supplies welding and industrial equipment for sale and offers selected equipment on rental for short-term projects, construction sites and maintenance requirements."
       />
 
       <PageHero

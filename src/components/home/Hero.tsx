@@ -22,7 +22,7 @@ export default function Hero() {
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-steel-300 sm:text-lg">
-            Since {siteConfig.established}, Reshma Weld Associates has been supplying welding
+            Since {siteConfig.established}, Reshma Weld Trading Corporation has been supplying welding
             machines, cutting equipment, welding consumables and industrial equipment, backed by
             installation, training, rental and technical support.
           </p>
