@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# React Router uses client-side routing — serve index.html for every path
+# so direct visits and refreshes on routes like /products don't 404.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
