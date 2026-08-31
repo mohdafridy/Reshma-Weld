@@ -40,18 +40,13 @@ const inputClasses =
 
 const labelClasses = "mb-2 block text-xs font-semibold uppercase tracking-wide text-ink-700";
 
-function encodeFormData(data: Record<string, string>) {
-  return Object.entries(data)
-    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-    .join("&");
-}
+type Status = "idle" | "sending" | "success" | "error" | "unavailable";
 
 export default function ContactForm() {
   const [searchParams] = useSearchParams();
   const [form, setForm] = useState<FormState>(initialState);
-  const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, boolean>>>({});
 
   useEffect(() => {
@@ -67,6 +62,14 @@ export default function ContactForm() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+
+    // Spam trap: bots that fill every field will fill this one too. Report
+    // success without actually sending anything.
+    if (honeypot) {
+      setStatus("success");
+      return;
+    }
+
     const nextErrors: Partial<Record<keyof FormState, boolean>> = {};
     if (!form.name.trim()) nextErrors.name = true;
     if (!form.phone.trim() && !form.email.trim()) {
@@ -79,27 +82,28 @@ export default function ContactForm() {
       setErrors(nextErrors);
       return;
     }
-
     setErrors({});
-    setSubmitError(false);
-    setSubmitting(true);
 
+    if (!siteConfig.formEndpoint) {
+      setStatus("unavailable");
+      return;
+    }
+
+    setStatus("sending");
     try {
-      const response = await fetch("/", {
+      const response = await fetch(siteConfig.formEndpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: encodeFormData({ "form-name": "enquiry", ...form }),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(form),
       });
       if (!response.ok) throw new Error(`Submission failed: ${response.status}`);
-      setSubmitted(true);
+      setStatus("success");
     } catch {
-      setSubmitError(true);
-    } finally {
-      setSubmitting(false);
+      setStatus("error");
     }
   }
 
-  if (submitted) {
+  if (status === "success") {
     return (
       <div className="flex flex-col items-center gap-4 border border-ink-900/10 bg-white px-8 py-16 text-center">
         <CheckCircle2 size={44} className="text-ok-500" strokeWidth={1.5} />
@@ -113,7 +117,7 @@ export default function ContactForm() {
           size="md"
           onClick={() => {
             setForm(initialState);
-            setSubmitted(false);
+            setStatus("idle");
           }}
         >
           Submit Another Enquiry
@@ -123,18 +127,16 @@ export default function ContactForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      noValidate
-      name="enquiry"
-      data-netlify="true"
-      className="border border-ink-900/10 bg-white p-6 sm:p-8"
-    >
-      <input type="hidden" name="form-name" value="enquiry" />
+    <form onSubmit={handleSubmit} noValidate className="border border-ink-900/10 bg-white p-6 sm:p-8">
       <p className="hidden">
         <label>
           Leave this field blank
-          <input name="bot-field" tabIndex={-1} autoComplete="off" />
+          <input
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+          />
         </label>
       </p>
 
@@ -276,11 +278,14 @@ export default function ContactForm() {
         </p>
       )}
 
-      {submitError && (
+      {(status === "error" || status === "unavailable") && (
         <div className="mt-4 flex items-start gap-2.5 border border-accent-500/30 bg-accent-100 p-4 text-sm text-accent-600">
           <AlertTriangle size={16} className="mt-0.5 shrink-0" />
           <span>
-            Something went wrong sending your enquiry. Please try again, or reach us directly at{" "}
+            {status === "error"
+              ? "Something went wrong sending your enquiry."
+              : "Online submission isn't available right now."}{" "}
+            Please reach us directly at{" "}
             <a href={`tel:${siteConfig.contact.phonePrimary.replace(/\s/g, "")}`} className="underline">
               {siteConfig.contact.phonePrimary}
             </a>{" "}
@@ -298,10 +303,10 @@ export default function ContactForm() {
         variant="primary"
         size="lg"
         icon={Send}
-        disabled={submitting}
+        disabled={status === "sending"}
         className="mt-6 w-full sm:w-auto"
       >
-        {submitting ? "Sending…" : "Send Enquiry"}
+        {status === "sending" ? "Sending…" : "Send Enquiry"}
       </Button>
     </form>
   );

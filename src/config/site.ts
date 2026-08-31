@@ -45,6 +45,11 @@ export const siteConfig = {
     quoteUrl: "/contact?type=quote",
     rentalUrl: "/contact?type=rental",
   },
+
+  // Endpoint for a form backend (e.g. a Formspree or Web3Forms form ID URL).
+  // Leave empty and the enquiry form will tell visitors to call/email
+  // directly instead of silently failing to deliver their submission.
+  formEndpoint: "", // TODO: add a form service endpoint to enable online submission
 } as const;
 
 export type SiteConfig = typeof siteConfig;
